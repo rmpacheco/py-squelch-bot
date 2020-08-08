@@ -1,13 +1,10 @@
 import cherrypy
 
+@cherrypy.popargs('match_id')
 class Matches(object):
-
-    def __init__(self):
-        pass
-
     @cherrypy.expose
     @cherrypy.tools.json_in()
-    def start(self):
+    def start(self, match_id):
         j = cherrypy.request.json
         return str( j["yourBotIndex"])
 
