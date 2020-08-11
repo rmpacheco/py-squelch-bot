@@ -1,28 +1,44 @@
-import cherrypy
+import cherrypy as cp
 
-class Match(object):
-
-    def __init__(self):
-        self.id = None
-        self.my_rolls = {}
-        self.their_rolls = {}
-
-    def create(self, id):
-        self.id = id
-
-class Bot(object):
-
+@cp.popargs('match_id')
+class Matches(object):
     def __init__(self):
         self.matches = {}
 
-    @cherrypy.expose
-    def info(self):
-        return "RomBot-1"
+    @cp.expose
+    @cp.tools.json_in()
+    def start(self, match_id):
+        if not match_id in self.matches:
+            self.matches[match_id] = cp.request.json
+            cp.log("created new match: " + match_id)
+        pass
 
-if __name__ == '__main__':
-    bot = Bot()
-    cherrypy.config.update({'server.socket_port': 8282})
-    cherrypy.tree.mount(bot, '/bot', None)
-    cherrypy.engine.start()
-    cherrypy.engine.block()
-    
+    @cp.expose
+    @cp.tools.json_in()
+    def end(self, match_id):
+        if match_id in self.matches:
+            del self.matches[match_id]
+            cp.log("ended match: " + match_id)
+        pass
+
+class Bot(object):
+    @cp.expose
+    @cp.tools.json_out()
+    def info(self):
+         return {"name":"Rombot"}
+
+class Root(object):
+    pass
+
+root = Root()
+root.match = Matches()
+root.bot = Bot()
+
+conf = {
+    'global': {
+        'server.socket_host': '0.0.0.0',
+        'server.socket_port': 8282,
+    },
+}
+
+cp.quickstart(root, '/', conf)
