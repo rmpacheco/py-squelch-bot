@@ -8,7 +8,6 @@ class Matches(object):
     @cherrypy.expose
     @cherrypy.tools.json_in()
     def start(self, match_id):
-        #return str( j["yourBotIndex"])
         if not match_id in self.matches:
             self.matches[match_id] = cherrypy.request.json
         pass
