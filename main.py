@@ -9,7 +9,7 @@ class Log(object):
 
 @cp.popargs('game_id')
 @cp.popargs('match_id')
-class Games(object):
+class GameController(object):
     def __init__(self):
         self.games = {}
 
@@ -22,7 +22,7 @@ class Games(object):
         pass
 
 @cp.popargs('match_id')
-class Matches(object):
+class MatchController(object):
     def __init__(self):
         self.matches = {}
 
@@ -42,19 +42,19 @@ class Matches(object):
             Log.info("ended match: " + match_id)
         pass
 
-class Bot(object):
+class BotController(object):
     @cp.expose
     @cp.tools.json_out()
     def info(self):
          return {"name":"Rombot"}
 
-class Root(object):
+class RootController(object):
     pass
 
-root = Root()
-root.match = Matches()
-root.match.game = Games()
-root.bot = Bot()
+root = RootController()
+root.match = MatchController()
+root.match.game = GameController()
+root.bot = BotController()
 
 conf = {
     'global': {
