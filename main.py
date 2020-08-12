@@ -7,6 +7,33 @@ class Log(object):
         else:
             cp.log("{" + category + "} - " + msg)
 
+@cp.popargs('turn_id')
+@cp.popargs('game_id')
+@cp.popargs('match_id')
+class TurnController(object):
+    def __init__(self):
+        self.turns = {}
+
+    @cp.expose
+    @cp.tools.json_in()
+    def start(self, match_id, game_id, turn_id):
+        if not turn_id in self.turns:
+            self.turns[turn_id] = cp.request.json
+            Log.info("turn start: " + turn_id)
+        pass
+
+    @cp.expose
+    @cp.tools.json_in()
+    def choose(self, match_id, game_id, turn_id):
+        Log.info("choose: " + turn_id)
+        pass
+
+    @cp.expose
+    @cp.tools.json_in()
+    def squelch(self, match_id, game_id, turn_id):
+        Log.info("squelch: " + turn_id)
+        pass
+
 @cp.popargs('game_id')
 @cp.popargs('match_id')
 class GameController(object):
@@ -62,6 +89,7 @@ class RootController(object):
 root = RootController()
 root.match = MatchController()
 root.match.game = GameController()
+root.match.game.turn = TurnController()
 root.bot = BotController()
 
 conf = {
