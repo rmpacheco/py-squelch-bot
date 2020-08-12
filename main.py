@@ -21,6 +21,14 @@ class GameController(object):
             Log.info("started new game: " + game_id)
         pass
 
+    @cp.expose
+    @cp.tools.json_in()
+    def end(self, match_id, game_id):
+        if game_id in self.games:
+            del self.games[game_id] 
+            Log.info("ended game: " + game_id)
+        pass
+
 @cp.popargs('match_id')
 class MatchController(object):
     def __init__(self):
