@@ -7,6 +7,18 @@ class Log(object):
         else:
             cp.log("{" + category + "} - " + msg)
 
+
+class BotTurn(Turn):
+    def __init__(self)
+
+
+class Turn(object):
+    def __init__(self, startPoints, otherPlayerTurns, isFinalRound):
+        self.startPoints = startPoints
+        self.otherPlayerTurns = otherPlayerTurns
+        self.isFinalRound = isFinalRound
+
+
 @cp.popargs('turn_id')
 @cp.popargs('game_id')
 @cp.popargs('match_id')
